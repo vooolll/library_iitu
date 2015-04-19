@@ -1,0 +1,180 @@
+.login-background{
+    background:#2C3E50;
+}
+
+.page-header{
+
+     margin-top: 0;
+ }
+
+.panel-body{
+
+    padding-top: 0;
+}
+
+.featuredImg{
+
+    padding-bottom: 0px;
+}
+
+
+.listDescription {
+    display: table;
+    padding-right: 100px;
+    float: none;
+    overflow: auto;
+    _zoom: 1;
+}
+
+.naiditeTovar{
+
+    color: #2C3E50;
+    text-align: center;
+    padding-top: 50px;
+    font-family: PT "serif regular";
+    font-size: 20px;
+
+}
+
+.labelIshyu{
+
+    color: #2C3E50;
+    margin-top:8px;
+    text-align:right;
+}
+
+
+.navbar{
+    margin-bottom: 0px;
+}
+
+
+.jumbotron{
+
+    background: #3498DB;
+    padding-bottom: 2px;
+    padding:12px;
+
+}
+
+.jumbotron{
+
+    padding-bottom: 12px;
+    padding:12px;
+}
+
+.form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .radio, .form-horizontal .radio-inline{
+
+    padding-top:0px;
+}
+
+.fa-circle{
+
+    color:#E74C3C;
+}
+
+
+small{
+
+    color:#C7D5DF;
+}
+
+.price{
+
+    color:#2980B9;
+}
+
+
+.thumbnail{
+
+    border: 0px;
+
+}
+
+
+.btn-group-lg > .btn, .btn-lg{
+
+     border-color:#3498DB;
+     color:#3498DB;
+     padding: 7px 47px;
+     border-radius: 10px;
+     border-width: 2px;
+
+
+ }
+
+
+.listTable td:first-child{
+
+    border-right:none;
+    text-align: center;
+    width:50px;
+    vertical-align: middle;
+}
+
+.listTable td:last-child{
+
+    text-align: center;
+    width:90px;
+    vertical-align: middle;
+}
+
+    .table-bordered>tbody>tr>td.vtaroiTD{
+        border-left: none;
+    }
+
+div.title {
+    position: relative;
+    text-align: center;
+}
+
+div.title h2{
+
+    color: #2C3E50;
+    font-family: PT Sans Narrow;
+    display: inline-block;
+    margin: 15px 0;
+    padding: 20px;
+    background: #fff;
+    position: relative;
+    z-index: 2;
+}
+
+div.title:after{
+
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #2C3E50;
+}
+
+.registration{
+    color: #FFFFFF;
+}
+
+.registration .form-horizontal .col-xs-4{
+
+    padding-bottom: 20px;
+}
+
+.registration .form-horizontal .col-xs-6{
+
+    padding-bottom: 20px;
+}
+
+.profilePhoto {
+    height: auto;
+    width:100%;
+}
+
+.green{
+    color: green;
+}
+
+.red{
+    color:red;
+}

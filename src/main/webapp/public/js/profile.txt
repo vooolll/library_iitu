@@ -1,0 +1,5 @@
+function editStudent(){
+  $("tr").removeAttr("onclick");
+    document.getElementById("textVopros1").style.display="none";
+    document.getElementById("inputVopros1").style.display="block";
+}
