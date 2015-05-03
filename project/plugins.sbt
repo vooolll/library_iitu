@@ -4,8 +4,10 @@ resolvers += "bigtoast-github" at "http://bigtoast.github.com/repo/"
 
 addSbtPlugin("com.github.bigtoast" % "sbt-liquibase" % "0.5")
 
-addSbtPlugin("com.earldouglas" % "xsbt-web-plugin" % "0.7.0")
-
-addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.0.4")
-
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0")
+
+// The Typesafe repository
+resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
+
+// Use the Play sbt plugin for Play projects
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.1")

@@ -1,0 +1,20 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+
+# Map static resources from the /public folder to the /assets URL path
+
+GET         /                             controllers.Users.getSignIn
+POST        /singin                       controllers.Users.postSignIn
+GET         /home                         controllers.Application.getIndex
+GET         /allbooks                     controllers.Books.getIndex
+GET         /subscribe/:bookId            controllers.Subscriptions.getSubscribe(bookId: Int)
+GET         /subscriptions/:bookId        controllers.Subscriptions.getIndex(bookId: Int)
+GET         /admin                        controllers.Admin.getIndex
+POST        /admin/addbook                controllers.Admin.postCreate
+GET         /admin/addbook                controllers.Admin.getCreate
+
+
+GET         /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)

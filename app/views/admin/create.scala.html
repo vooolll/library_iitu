@@ -1,0 +1,10 @@
+@(createForm: Form[(String, Int, String)])
+@admin.adm(""){
+    <h1>Добавить книгу</h1>
+    @helper.form(action = routes.Admin.postCreate()){
+        @helper.inputText(createForm("title"), '_label -> "Название книги")
+        @helper.inputText(createForm("quantity"), '_label -> "Количество")
+        @helper.inputText(createForm("author"), '_label -> "Автор")
+        <button type="submit"  class="btn btn-vk">Войти</button>
+    }
+}
