@@ -1,11 +1,13 @@
 package controllers
 
 import play.api.mvc._
+import services.BooksService
 
 object Application extends Controller{
 
   def getIndex = Action {
-    Ok(views.html.index())
+    val books = BooksService.all()
+    Ok(views.html.index(books))
   }
 
 }

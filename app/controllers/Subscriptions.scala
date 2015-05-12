@@ -2,7 +2,7 @@ package controllers
 
 import controllers.auth.Secured
 import play.api.mvc._
-import services.SubscriptionService
+import services.{BooksService, SubscriptionService}
 
 object Subscriptions extends Controller with Secured{
 
@@ -14,6 +14,11 @@ object Subscriptions extends Controller with Secured{
   def getIndex(bookId: Int) = Action {
     val subscriptions = SubscriptionService.getSubscriptions(bookId)
     Ok(views.html.subscriptions.index(subscriptions._1, subscriptions._2))
+  }
+
+  def getQueue = withUser { user => implicit request =>
+    val books = SubscriptionService.getQueuesFor(user.iituId)
+    Ok(views.html.subscriptions.mine(books))
   }
 
 }

@@ -1,7 +1,7 @@
 package services
 
 import models.Book
-import repos.BookRepo
+import repos.{SubscriptionRepo, BookRepo}
 
 object BooksService {
 
@@ -14,4 +14,7 @@ object BooksService {
     BookRepo.save(book)
   }
 
+  def getBooksFor(userId: Int):List[Book] = {
+    SubscriptionRepo.getBorrowSubscription(userId)
+  }
 }

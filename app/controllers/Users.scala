@@ -1,13 +1,13 @@
 package controllers
 
+import controllers.auth.Secured
 import play.api.data.Forms._
 import play.api.data._
 import play.api.mvc._
-import services.UsersService
+import services.{BooksService, UsersService}
 
-import scala.tools.nsc.interpreter.session
 
-object Users extends Controller {
+object Users extends Controller with Secured{
 
   val form = Form(
     tuple(
@@ -20,7 +20,6 @@ object Users extends Controller {
   }
 
   def postSignIn = Action { implicit request =>
-
     form.bindFromRequest.fold(
       formWithErrors => {
         BadRequest(views.html.signin(formWithErrors))
@@ -41,8 +40,8 @@ object Users extends Controller {
     )
   }
 
-  def getCurrentUserRole: Int = {
-
+  def getProfile = withUser { user => implicit request =>
+    val books = BooksService.getBooksFor(user.iituId)
+    Ok(views.html.books.mine(books))
   }
-
 }

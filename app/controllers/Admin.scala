@@ -3,7 +3,7 @@ package controllers
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{Action, Controller}
-import services.BooksService
+import services.{SubscriptionService, BooksService}
 
 object Admin extends Controller{
 
@@ -15,27 +15,43 @@ object Admin extends Controller{
     ))
 
   def getIndex = Action {
-    Ok(views.html.admin.index())
+    val books = BooksService.all()
+    Ok(views.html.admin.books.index(books))
   }
 
   def getCreate = Action {
-    Ok(views.html.admin.create(form))
+    Ok(views.html.admin.books.create(form))
   }
 
   def postCreate = Action { implicit request=>
     form.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.admin.create(formWithErrors))
+        BadRequest(views.html.admin.books.create(formWithErrors))
       },
       data => {
         BooksService.create(data) match {
           case None =>
             val newForm = form.fill(data).withError("title", "Книга с таким названием уже существует")
-            BadRequest(views.html.admin.create(newForm))
-          case Some(user) => Redirect(routes.Books.getIndex())
+            BadRequest(views.html.admin.books.create(newForm))
+          case Some(user) => Redirect(routes.Admin.getIndex())
         }
       }
     )
+  }
+
+  def getAllSubscriptions = Action {
+    val allSubscriptions = SubscriptionService.getAll
+    Ok(views.html.admin.subscriptions.index(allSubscriptions))
+  }
+
+  def getSubscriptions(bookId: Int) = Action {
+    val bookSubs = SubscriptionService.getSubscriptions(bookId)
+    Ok(views.html.admin.subscriptions.book_subs(bookSubs._1, bookSubs._2))
+  }
+
+  def getBorrow(subsId: Int) = Action {
+    SubscriptionService.borrow(subsId)
+    Redirect(routes.Admin.getAllSubscriptions())
   }
 
 }

@@ -11,5 +11,6 @@ class SubscriptionTable(tag: Tag) extends Table[Subscription](tag, "subscription
   def bookId = column[Int]("book_id")
   def userId = column[Int]("user_id")
   def createdAt = column[Timestamp]("created_at")
-  def * = (id.?, bookId, userId, createdAt) <> (Subscription.tupled, Subscription.unapply)
+  def status = column[Int]("type")
+  def * = (id.?, bookId, userId, status, createdAt) <> (Subscription.tupled, Subscription.unapply)
 }

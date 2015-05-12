@@ -71,4 +71,14 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="1430214640522-6" author="vol">
+        <addColumn tableName="subscriptions">
+            <column name="type" type="smallint" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>
