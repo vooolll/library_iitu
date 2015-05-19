@@ -5,6 +5,7 @@ import support.Repo
 import conf.DB._
 import tables.{BooksTable, SubscriptionTable}
 import scala.slick.driver.H2Driver.simple._
+import scala.util.Random
 
 object SubscriptionRepo extends Repo{
 
@@ -42,7 +43,8 @@ object SubscriptionRepo extends Repo{
 
   def updateStatus(status: Int, subscriptionId: Int): Int = DB withSession {
     implicit session =>
-      subsTable.filter(_.id === subscriptionId).map(s => s.status).update(status)
+      val secretCode = Random.alphanumeric.take(5).mkString
+      subsTable.filter(_.id === subscriptionId).map(s => (s.status, s.secretCode)).update((status, secretCode))
   }
 
   def getBorrowSubscription(userId: Int):List[Book] = DB withSession {
@@ -56,5 +58,27 @@ object SubscriptionRepo extends Repo{
       val query = subsTable.filter(s => s.userId === userId && s.status === SubscriptionTypes.QUEUE).sortBy(_.id)
       query.list
   }
+
+  def getByBook(bookId: Int):Option[Subscription] = DB withSession{
+    implicit session =>
+      subsTable.filter(_.bookId === bookId).firstOption
+  }
+
+  def getByCode(code: String): Option[Subscription] = DB withSession {
+    implicit session =>
+      subsTable.filter(_.secretCode === code).firstOption
+  }
+
+
+  def delete(subsId: Int):Unit = DB withSession {
+    implicit session =>
+      subsTable.filter(_.id === subsId).delete
+  }
+
+  def get(subsId: Int): Option[Subscription] = DB withSession {
+    implicit session =>
+      subsTable.filter(_.id === subsId).firstOption
+  }
+
 }
 

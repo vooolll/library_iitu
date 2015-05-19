@@ -30,7 +30,6 @@ object Users extends Controller with Secured{
               .withSession(Security.username -> user.iituId.toString)
             else Redirect(routes.Admin.getIndex())
               .withSession(Security.username -> user.iituId.toString)
-              .withSession("role" -> "2")
 
           case None =>
             val formWithError = form.fill(data).withError("ID", "Не верный ID или пароль")
@@ -44,4 +43,5 @@ object Users extends Controller with Secured{
     val books = BooksService.getBooksFor(user.iituId)
     Ok(views.html.books.mine(books))
   }
+
 }

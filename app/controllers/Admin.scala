@@ -1,5 +1,7 @@
 package controllers
 
+import java.lang.Character
+
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{Action, Controller}
@@ -12,6 +14,12 @@ object Admin extends Controller{
       "title" -> text(minLength = 4, maxLength = 255),
       "quantity" -> number,
       "author" -> text(minLength = 4, maxLength = 255)
+    ))
+
+  val codeForm = Form(
+    tuple(
+      "code" -> text,
+      "user_id" -> text
     ))
 
   def getIndex = Action {
@@ -52,6 +60,26 @@ object Admin extends Controller{
   def getBorrow(subsId: Int) = Action {
     SubscriptionService.borrow(subsId)
     Redirect(routes.Admin.getAllSubscriptions())
+  }
+
+  def postFindBook = Action { implicit request =>
+    codeForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.admin.books.find(codeForm, Nil))
+      },
+      data => {
+        println(data)
+        if (data._2 forall Character.isDigit) {
+          println(data._2 forall Character.isDigit)
+          val books = BooksService.findBook(data._1, data._2)
+          Ok(views.html.admin.books.find(codeForm, books))
+        } else BadRequest(views.html.admin.books.find(codeForm, Nil))
+      }
+    )
+  }
+
+  def getFindBook = Action {
+    Ok(views.html.admin.books.find(codeForm, Nil))
   }
 
 }

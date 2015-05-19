@@ -79,6 +79,13 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="1430214640522-7" author="vol">
+        <addColumn tableName="subscriptions">
+            <column type="VARCHAR(250)" name="secret_code">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
 
 </databaseChangeLog>

@@ -22,8 +22,13 @@ object SubscriptionService {
   }
 
   def borrow(subsId: Int): Int = {
-    val subscription = SubscriptionRepo.updateStatus(SubscriptionTypes.BORROW, subsId)
-    subscription
+    val subscriptionId = SubscriptionRepo.updateStatus(SubscriptionTypes.BORROW, subsId)
+    SubscriptionRepo.get(subsId) match {
+      case None => subscriptionId
+      case Some(subs:Subscription) =>
+        BookRepo.subtractQuantity(subs.book_id)
+        subscriptionId
+    }
   }
 
   def getAll: List[Subscription] ={
@@ -35,4 +40,12 @@ object SubscriptionService {
     SubscriptionRepo.getSubscriptionsFor(userId)
   }
 
+  def getCode(bookId: Int): Option[String] ={
+    //ugly
+    SubscriptionRepo.getByBook(bookId).get.secretCode
+  }
+
+  def delete(subsId: Int):Unit = {
+    SubscriptionRepo.delete(subsId)
+  }
 }

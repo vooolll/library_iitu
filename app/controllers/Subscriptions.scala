@@ -21,4 +21,10 @@ object Subscriptions extends Controller with Secured{
     Ok(views.html.subscriptions.mine(books))
   }
 
+  def getDelete(subsId: Int) = withUser { user => implicit request =>
+    SubscriptionService.delete(subsId)
+    val books = SubscriptionService.getQueuesFor(user.iituId)
+    Ok(views.html.subscriptions.mine(books))
+  }
+
 }

@@ -23,5 +23,12 @@ trait Secured {
     }.getOrElse(onUnauthorized(request))
   }
 
+  def withAdmin(f: User => Request[AnyContent] => Result) = withAuth { username => implicit request =>
+    UsersService.getUser(username.toInt).map { user =>
+      if (user.role == 1) f(user)(request)
+      else onUnauthorized(request)
+    }.getOrElse(onUnauthorized(request))
+  }
+
 
 }
