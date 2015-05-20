@@ -2,10 +2,12 @@ package controllers
 
 import java.lang.Character
 
+import models.{LogTypes, Subscription, Book}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{Action, Controller}
-import services.{SubscriptionService, BooksService}
+import repos.SubscriptionRepo
+import services.{LogService, NotificationService, SubscriptionService, BooksService}
 
 object Admin extends Controller{
 
@@ -57,29 +59,44 @@ object Admin extends Controller{
     Ok(views.html.admin.subscriptions.book_subs(bookSubs._1, bookSubs._2))
   }
 
-  def getBorrow(subsId: Int) = Action {
+  def getBorrow(subsId: Int, userId: Int) = Action {
     SubscriptionService.borrow(subsId)
+    val subs = SubscriptionService.get(subsId)
+    NotificationService.add(userId, "Вы можете забрать книгу с ID #" + subs.get.book_id + "в течении двух дней.")
+    LogService.add(subs.get.book_id, userId, LogTypes.BORROW)
     Redirect(routes.Admin.getAllSubscriptions())
   }
 
   def postFindBook = Action { implicit request =>
     codeForm.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.admin.books.find(codeForm, Nil))
+        BadRequest(views.html.admin.books.find(codeForm, Nil, Nil))
       },
       data => {
-        println(data)
         if (data._2 forall Character.isDigit) {
-          println(data._2 forall Character.isDigit)
           val books = BooksService.findBook(data._1, data._2)
-          Ok(views.html.admin.books.find(codeForm, books))
-        } else BadRequest(views.html.admin.books.find(codeForm, Nil))
+          val subs = SubscriptionService.getByCodeAndUser(data._1, data._2)
+
+          Ok(views.html.admin.books.find(codeForm, books, subs))
+        } else BadRequest(views.html.admin.books.find(codeForm, Nil, Nil))
       }
     )
   }
 
   def getFindBook = Action {
-    Ok(views.html.admin.books.find(codeForm, Nil))
+    Ok(views.html.admin.books.find(codeForm, Nil, Nil))
+  }
+
+  def getReturnBook(subsId: Int) = Action {
+    val sub = SubscriptionService.get(subsId)
+    SubscriptionService.returnBook(subsId)
+    LogService.add(sub.get.book_id, sub.get.user_id, LogTypes.RETURN)
+
+    Ok(views.html.admin.books.find(codeForm, Nil, Nil))
+  }
+
+  def getLog = Action {
+    Ok(views.html.admin.log.index(LogService.getAll()))
   }
 
 }

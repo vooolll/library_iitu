@@ -1,0 +1,43 @@
+@(logs:List[Log])
+@admin.adm("") {
+    <h1>Журнал действий</h1>
+    <br><br>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Журнал дейстивй
+        </div>
+
+    <!-- /.panel-heading -->
+
+    <div class="panel-body">
+        <div class="list-group">
+            @if(logs.isEmpty){
+                <p>Нет уведомлений</p>
+            }
+            @logs.map { log =>
+                <a class="list-group-item" href="#">
+                    @if(log.typeOfAction == 1) {
+                        <i class="fa fa-comment fa-fw"></i> Пользватель с логином @log.user_id встал в очередь за книгой с ID # @log.book_id
+                        <span class="pull-right text-muted small">
+                        </span><span class="pull-right text-muted small"><em>@log.createdAt</em></span>
+                    }
+                    @if(log.typeOfAction == 2) {
+                        <i class="fa fa-comment fa-fw"></i> Пользватель с логином @log.user_id забрал книгу с ID # @log.book_id
+                        <span class="pull-right text-muted small">
+                        </span><span class="pull-right text-muted small"><em>@log.createdAt</em></span>
+                    }
+                    @if(log.typeOfAction == 3) {
+                        <i class="fa fa-comment fa-fw"></i> Пользватель с логином @log.user_id вернул книгу с ID # @log.book_id
+                        <span class="pull-right text-muted small">
+                        </span><span class="pull-right text-muted small">
+                        <em>@log.createdAt</em></span>
+                    }
+                </a>
+            }
+
+        </div>
+            <!-- /.list-group -->
+    </div>
+    <!-- /.panel-body -->
+    </div>
+}

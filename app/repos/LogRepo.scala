@@ -12,7 +12,7 @@ object LogRepo {
 
   def all():List[Log] = DB withSession{
     implicit session =>
-      logTable.run.toList
+      logTable.sortBy(_.id.desc).list
   }
 
   def save(log: Log):Log = DB withSession{

@@ -1,4 +1,4 @@
-@(searchForm: Form[(String, String)], books: List[Book])
+@(searchForm: Form[(String, String)], books: List[Book], subs: List[Subscription])
 @admin.adm("Find") {
     <h1>Поиск книг</h1>
     <p class="lead">Поиск по секретному коду</p>
@@ -19,34 +19,51 @@
 
         <p class="lead">Результаты поиска</p>
 
+
+
         <table id="dataTables-example" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="dataTables-example_info">
             <thead>
                 <tr role="row">
                     <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width : 273 px ;" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting_asc">
-                        ID</th>
+                        IITU ID</th>
                     <th aria-label="Browser: activate to sort column ascending" style="width : 327 px ;" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting">
-                        Название</th>
+                        Секретный код</th>
                     <th aria-label="Platform(s): activate to sort column ascending" style="width : 299 px ;" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting">
-                        Автор</th>
+                        Дата</th>
                     <th aria-label="Engine version: activate to sort column ascending" style="width : 238 px ;" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting">
-                        Количество доступных</th>
+                        ID книги</th>
+                    <th aria-label="Engine version: activate to sort column ascending" style="width : 238 px ;" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting">
+                        Навание книги</th>
+                    <th aria-label="Engine version: activate to sort column ascending" style="width : 238 px ;" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting">
+                        Автор</th>
                     <th aria-label="CSS grade: activate to sort column ascending" style="width : 323 px ; padding-right : 1 px" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting_asc">
-                        Actions</th>
+                        Количество</th>
+                    <th aria-label="CSS grade: activate to sort column ascending" style="width : 323 px ; padding-right : 1 px" colspan="1" rowspan="1" aria-controls="dataTables-example" tabindex="0" class="sorting_asc">
+                        Действия</th>
                 </tr>
             </thead>
             <tbody>
-            @books.map { book =>
-                <tr role="row" class="gradeA odd">
-                    <td class="sorting_1">@book.id</td>
-                    <td>@book.title</td>
-                    <td class="center">@book.author</td>
-                    <td>@book.quantity</td>
 
-                    <td>
-                        <span>
-                            <a href="/admin/subs/@book.id" class="btn btn-primary">Подтвердить возврат</a>
-                        </span>
-                    </td>
+
+            @subs.map { sub =>
+                <tr role="row" class="gradeA odd">
+                    <td>@sub.user_id</td>
+                    <td>@sub.secretCode</td>
+                    <td>@sub.createdAt</td>
+                @books.map { book =>
+                    @if(book.id.getOrElse(-1) == sub.book_id) {
+                        <td class="sorting_1">@book.id</td>
+                        <td>@book.title</td>
+                        <td class="center">@book.author</td>
+                        <td>@book.quantity</td>
+
+                        <td>
+                            <span>
+                                <a href="/books/return/@sub.id" class="btn btn-primary">Подтвердить возврат</a>
+                            </span>
+                        </td>
+                    }
+                }
                 </tr>
             }
 

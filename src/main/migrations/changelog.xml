@@ -86,6 +86,20 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="1430214640522-8" author="vol">
+        <createTable tableName="notifications">
+            <column name="id" type="serial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="message" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="serial">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 
 </databaseChangeLog>

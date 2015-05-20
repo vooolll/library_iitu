@@ -65,6 +65,12 @@ object BookRepo extends Repo{
       bookTable.filter(_.id === bookId).map(b => b.quantity).update(quantity.get - 1)
   }
 
+  def addQuantity(bookId: Int): Int = DB withSession{
+    implicit session =>
+      val quantity = bookTable.filter(_.id === bookId).map(b => b.quantity).firstOption
+      bookTable.filter(_.id === bookId).map(b => b.quantity).update(quantity.get + 1)
+  }
+
   def getByCodeAndUser(data: (String, String)):List[Book] = DB withSession {
     implicit session =>
       val ids = data match {

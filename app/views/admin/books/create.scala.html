@@ -2,9 +2,10 @@
 @admin.adm(""){
     <h1>Добавить книгу</h1>
     @helper.form(action = routes.Admin.postCreate()){
-        @helper.inputText(createForm("title"), '_label -> "Название книги")
-        @helper.inputText(createForm("quantity"), '_label -> "Количество")
-        @helper.inputText(createForm("author"), '_label -> "Автор")
+        @helper.inputText(createForm("title"), '_label -> "Название книги", 'class -> "form-control", '_showConstraints -> false)
+        @helper.inputText(createForm("quantity"), '_label -> "Количество", 'class -> "form-control", '_showConstraints -> false)
+        @helper.inputText(createForm("author"), '_label -> "Автор", 'class -> "form-control", '_showConstraints -> false)
+
         <button type="submit"  class="btn btn-primary">Добавить</button>
     }
 }

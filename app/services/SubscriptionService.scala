@@ -17,7 +17,6 @@ object SubscriptionService {
   def getSubscriptions(bookId: Int):(List[Subscription], Book) ={
     val subscription = SubscriptionRepo.getSubscriptions(bookId)
     val bookDetails = BookRepo.get(bookId)
-    println("get subscriptions: " + bookDetails)
     (subscription, bookDetails.get)
   }
 
@@ -47,5 +46,22 @@ object SubscriptionService {
 
   def delete(subsId: Int):Unit = {
     SubscriptionRepo.delete(subsId)
+  }
+
+  def returnBook(subsId: Int) = {
+    SubscriptionRepo.get(subsId) match {
+      case None => delete(subsId)
+      case Some(subs: Subscription) =>
+        BookRepo.addQuantity(subs.book_id)
+        delete(subsId)
+    }
+  }
+
+  def getByCodeAndUser(data: (String, String)): List[Subscription] = {
+    SubscriptionRepo.getByCodeAndUser(data)
+  }
+
+  def get(subsId: Int): Option[Subscription] = {
+    SubscriptionRepo.get(subsId)
   }
 }

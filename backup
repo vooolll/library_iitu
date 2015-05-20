@@ -1,0 +1,626 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.0
+-- Dumped by pg_dump version 9.4.0
+-- Started on 2015-05-19 18:28:25 UTC
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 186 (class 3079 OID 11861)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2075 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 175 (class 1259 OID 119994)
+-- Name: books; Type: TABLE; Schema: public; Owner: homestead; Tablespace: 
+--
+
+CREATE TABLE books (
+    id integer NOT NULL,
+    title character varying(250) NOT NULL,
+    quantity integer NOT NULL,
+    author character varying(250) NOT NULL
+);
+
+
+ALTER TABLE books OWNER TO homestead;
+
+--
+-- TOC entry 174 (class 1259 OID 119992)
+-- Name: books_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE books_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE books_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2076 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: books_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE books_id_seq OWNED BY books.id;
+
+
+--
+-- TOC entry 172 (class 1259 OID 60427)
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: homestead; Tablespace: 
+--
+
+CREATE TABLE databasechangelog (
+    id character varying(63) NOT NULL,
+    author character varying(63) NOT NULL,
+    filename character varying(200) NOT NULL,
+    dateexecuted timestamp with time zone NOT NULL,
+    orderexecuted integer NOT NULL,
+    exectype character varying(10) NOT NULL,
+    md5sum character varying(35),
+    description character varying(255),
+    comments character varying(255),
+    tag character varying(255),
+    liquibase character varying(20)
+);
+
+
+ALTER TABLE databasechangelog OWNER TO homestead;
+
+--
+-- TOC entry 173 (class 1259 OID 119938)
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: homestead; Tablespace: 
+--
+
+CREATE TABLE databasechangeloglock (
+    id integer NOT NULL,
+    locked boolean NOT NULL,
+    lockgranted timestamp with time zone,
+    lockedby character varying(255)
+);
+
+
+ALTER TABLE databasechangeloglock OWNER TO homestead;
+
+--
+-- TOC entry 179 (class 1259 OID 120009)
+-- Name: logs; Type: TABLE; Schema: public; Owner: homestead; Tablespace: 
+--
+
+CREATE TABLE logs (
+    id integer NOT NULL,
+    action integer NOT NULL,
+    book_id integer NOT NULL,
+    user_id integer NOT NULL,
+    created_at timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE logs OWNER TO homestead;
+
+--
+-- TOC entry 177 (class 1259 OID 120005)
+-- Name: logs_book_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE logs_book_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE logs_book_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2077 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: logs_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE logs_book_id_seq OWNED BY logs.book_id;
+
+
+--
+-- TOC entry 176 (class 1259 OID 120003)
+-- Name: logs_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE logs_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2078 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE logs_id_seq OWNED BY logs.id;
+
+
+--
+-- TOC entry 178 (class 1259 OID 120007)
+-- Name: logs_user_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE logs_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE logs_user_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2079 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: logs_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE logs_user_id_seq OWNED BY logs.user_id;
+
+
+--
+-- TOC entry 183 (class 1259 OID 120023)
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: homestead; Tablespace: 
+--
+
+CREATE TABLE subscriptions (
+    id integer NOT NULL,
+    book_id integer NOT NULL,
+    user_id integer NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    type smallint DEFAULT 1::smallint NOT NULL,
+    secret_code character varying(250)
+);
+
+
+ALTER TABLE subscriptions OWNER TO homestead;
+
+--
+-- TOC entry 181 (class 1259 OID 120019)
+-- Name: subscriptions_book_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE subscriptions_book_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE subscriptions_book_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2080 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: subscriptions_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE subscriptions_book_id_seq OWNED BY subscriptions.book_id;
+
+
+--
+-- TOC entry 180 (class 1259 OID 120017)
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE subscriptions_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2081 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
+
+
+--
+-- TOC entry 182 (class 1259 OID 120021)
+-- Name: subscriptions_user_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE subscriptions_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE subscriptions_user_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2082 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: subscriptions_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE subscriptions_user_id_seq OWNED BY subscriptions.user_id;
+
+
+--
+-- TOC entry 185 (class 1259 OID 120033)
+-- Name: users; Type: TABLE; Schema: public; Owner: homestead; Tablespace: 
+--
+
+CREATE TABLE users (
+    iitu_id integer NOT NULL,
+    password character varying(250) NOT NULL,
+    role smallint DEFAULT 1::smallint NOT NULL
+);
+
+
+ALTER TABLE users OWNER TO homestead;
+
+--
+-- TOC entry 184 (class 1259 OID 120031)
+-- Name: users_iitu_id_seq; Type: SEQUENCE; Schema: public; Owner: homestead
+--
+
+CREATE SEQUENCE users_iitu_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_iitu_id_seq OWNER TO homestead;
+
+--
+-- TOC entry 2083 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: users_iitu_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: homestead
+--
+
+ALTER SEQUENCE users_iitu_id_seq OWNED BY users.iitu_id;
+
+
+--
+-- TOC entry 1921 (class 2604 OID 119997)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY books ALTER COLUMN id SET DEFAULT nextval('books_id_seq'::regclass);
+
+
+--
+-- TOC entry 1922 (class 2604 OID 120012)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY logs ALTER COLUMN id SET DEFAULT nextval('logs_id_seq'::regclass);
+
+
+--
+-- TOC entry 1923 (class 2604 OID 120013)
+-- Name: book_id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY logs ALTER COLUMN book_id SET DEFAULT nextval('logs_book_id_seq'::regclass);
+
+
+--
+-- TOC entry 1924 (class 2604 OID 120014)
+-- Name: user_id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY logs ALTER COLUMN user_id SET DEFAULT nextval('logs_user_id_seq'::regclass);
+
+
+--
+-- TOC entry 1925 (class 2604 OID 120026)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscriptions_id_seq'::regclass);
+
+
+--
+-- TOC entry 1926 (class 2604 OID 120027)
+-- Name: book_id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN book_id SET DEFAULT nextval('subscriptions_book_id_seq'::regclass);
+
+
+--
+-- TOC entry 1927 (class 2604 OID 120028)
+-- Name: user_id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN user_id SET DEFAULT nextval('subscriptions_user_id_seq'::regclass);
+
+
+--
+-- TOC entry 1929 (class 2604 OID 120036)
+-- Name: iitu_id; Type: DEFAULT; Schema: public; Owner: homestead
+--
+
+ALTER TABLE ONLY users ALTER COLUMN iitu_id SET DEFAULT nextval('users_iitu_id_seq'::regclass);
+
+
+--
+-- TOC entry 2057 (class 0 OID 119994)
+-- Dependencies: 175
+-- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: homestead
+--
+
+COPY books (id, title, quantity, author) FROM stdin;
+195	Test driven development	59	Kent Beck
+197	Kochevniki	54	Esenberlin
+196	Design Patterns	99	Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides
+199	SSD10	44	Author
+198	SSD9	19	Author
+194	Effective Java	25	Joshua Bloch
+\.
+
+
+--
+-- TOC entry 2084 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('books_id_seq', 199, true);
+
+
+--
+-- TOC entry 2054 (class 0 OID 60427)
+-- Dependencies: 172
+-- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: homestead
+--
+
+COPY databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase) FROM stdin;
+1430214640522-1	vol (generated)	src/main/migrations/changelog.xml	2015-04-28 10:01:03.24725+00	1	EXECUTED	3:f9cd31a37d4de060283137b597f6d1d1	Create Table		\N	2.0.5
+1430214640522-2	vol (generated)	src/main/migrations/changelog.xml	2015-04-28 10:01:03.26904+00	2	EXECUTED	3:0b6848bb6db11095438d6cf7dc2a9046	Create Table		\N	2.0.5
+1430214640522-3	vol (generated)	src/main/migrations/changelog.xml	2015-04-28 10:01:03.284429+00	3	EXECUTED	3:5b0624df27ffd739e0ddd7d060771508	Create Table		\N	2.0.5
+1430214640522-4	vol (generated)	src/main/migrations/changelog.xml	2015-04-28 10:01:03.297303+00	4	EXECUTED	3:b930214e80642d5f20c49c57aabd3a3c	Create Table		\N	2.0.5
+1430214640522-5	vol (generated)	src/main/migrations/changelog.xml	2015-04-28 10:01:03.306425+00	5	EXECUTED	3:edc170596350d96b8a13c1cd9b1245ad	Add Unique Constraint		\N	2.0.5
+1430214640522-5	vol	src/main/migrations/changelog.xml	2015-04-28 10:01:03.317992+00	6	EXECUTED	3:2db6c49d9c3d98f502cf150246cf0fa8	Add Column		\N	2.0.5
+1430214640522-6	vol	src/main/migrations/changelog.xml	2015-05-03 07:10:38.728725+00	7	EXECUTED	3:962b58feb232df6109cf64e5c14e3601	Add Column		\N	2.0.5
+1430214640522-7	vol	src/main/migrations/changelog.xml	2015-05-12 06:01:08.134442+00	8	EXECUTED	3:284efcda747c5970a79c2db62c43f7c9	Add Column		\N	2.0.5
+\.
+
+
+--
+-- TOC entry 2055 (class 0 OID 119938)
+-- Dependencies: 173
+-- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: homestead
+--
+
+COPY databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin;
+1	f	\N	\N
+\.
+
+
+--
+-- TOC entry 2061 (class 0 OID 120009)
+-- Dependencies: 179
+-- Data for Name: logs; Type: TABLE DATA; Schema: public; Owner: homestead
+--
+
+COPY logs (id, action, book_id, user_id, created_at) FROM stdin;
+48	1	1	15493	2015-05-03 07:19:36.867+00
+\.
+
+
+--
+-- TOC entry 2085 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: logs_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('logs_book_id_seq', 1, false);
+
+
+--
+-- TOC entry 2086 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: logs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('logs_id_seq', 48, true);
+
+
+--
+-- TOC entry 2087 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: logs_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('logs_user_id_seq', 1, false);
+
+
+--
+-- TOC entry 2065 (class 0 OID 120023)
+-- Dependencies: 183
+-- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: homestead
+--
+
+COPY subscriptions (id, book_id, user_id, created_at, type, secret_code) FROM stdin;
+195	196	15493	2015-05-19 05:43:22.182+00	2	0bod3
+196	199	15493	2015-05-19 07:05:23.764+00	2	WWFVi
+\.
+
+
+--
+-- TOC entry 2088 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: subscriptions_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('subscriptions_book_id_seq', 1, false);
+
+
+--
+-- TOC entry 2089 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: subscriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('subscriptions_id_seq', 196, true);
+
+
+--
+-- TOC entry 2090 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: subscriptions_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('subscriptions_user_id_seq', 1, false);
+
+
+--
+-- TOC entry 2067 (class 0 OID 120033)
+-- Dependencies: 185
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: homestead
+--
+
+COPY users (iitu_id, password, role) FROM stdin;
+15492	vova1992	2
+15493	vova1992	1
+\.
+
+
+--
+-- TOC entry 2091 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: users_iitu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: homestead
+--
+
+SELECT pg_catalog.setval('users_iitu_id_seq', 1, false);
+
+
+--
+-- TOC entry 1936 (class 2606 OID 120040)
+-- Name: books_title_key; Type: CONSTRAINT; Schema: public; Owner: homestead; Tablespace: 
+--
+
+ALTER TABLE ONLY books
+    ADD CONSTRAINT books_title_key UNIQUE (title);
+
+
+--
+-- TOC entry 1938 (class 2606 OID 120002)
+-- Name: pk_books; Type: CONSTRAINT; Schema: public; Owner: homestead; Tablespace: 
+--
+
+ALTER TABLE ONLY books
+    ADD CONSTRAINT pk_books PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1932 (class 2606 OID 60434)
+-- Name: pk_databasechangelog; Type: CONSTRAINT; Schema: public; Owner: homestead; Tablespace: 
+--
+
+ALTER TABLE ONLY databasechangelog
+    ADD CONSTRAINT pk_databasechangelog PRIMARY KEY (id, author, filename);
+
+
+--
+-- TOC entry 1934 (class 2606 OID 119942)
+-- Name: pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: homestead; Tablespace: 
+--
+
+ALTER TABLE ONLY databasechangeloglock
+    ADD CONSTRAINT pk_databasechangeloglock PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1940 (class 2606 OID 120016)
+-- Name: pk_logs; Type: CONSTRAINT; Schema: public; Owner: homestead; Tablespace: 
+--
+
+ALTER TABLE ONLY logs
+    ADD CONSTRAINT pk_logs PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1942 (class 2606 OID 120030)
+-- Name: pk_subscriptions; Type: CONSTRAINT; Schema: public; Owner: homestead; Tablespace: 
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT pk_subscriptions PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1944 (class 2606 OID 120038)
+-- Name: pk_users; Type: CONSTRAINT; Schema: public; Owner: homestead; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT pk_users PRIMARY KEY (iitu_id);
+
+
+--
+-- TOC entry 2074 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2015-05-19 18:28:29 UTC
+
+--
+-- PostgreSQL database dump complete
+--
+

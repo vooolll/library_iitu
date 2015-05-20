@@ -6,26 +6,29 @@
 
 # Map static resources from the /public folder to the /assets URL path
 
-GET         /                                    controllers.Users.getSignIn
-POST        /singin                              controllers.Users.postSignIn
-GET         /home                                controllers.Application.getIndex
-GET         /allbooks                            controllers.Books.getIndex
-GET         /subscribe/:bookId                   controllers.Subscriptions.getSubscribe(bookId: Int)
-GET         /subscriptions/:bookId               controllers.Subscriptions.getIndex(bookId: Int)
-GET         /admin                               controllers.Admin.getIndex
-POST        /admin/addbook                       controllers.Admin.postCreate
-GET         /admin/addbook                       controllers.Admin.getCreate
-GET         /admin/allsubs                       controllers.Admin.getAllSubscriptions
-GET         /admin/subs/:bookId                  controllers.Admin.getSubscriptions(bookId: Int)
-GET         /admin/subs/give/:subsId             controllers.Admin.getBorrow(subsId: Int)
-GET         /books/mine                          controllers.Users.getProfile
-GET         /subscriptions/queue/mine            controllers.Subscriptions.getQueue
-GET         /book/cert/:bookId                   controllers.Books.getCertificate(bookId: Int)
-GET         /admin/find                          controllers.Admin.getFindBook
-POST        /admin/find                          controllers.Admin.postFindBook
-GET         /subscriptions/:subsId/delete        controllers.Subscriptions.getDelete(subsId: Int)
-GET         /books/find                          controllers.Books.getSearch
-POST        /books/find                          controllers.Books.postSearch
+GET         /                                       controllers.Users.getSignIn
+POST        /singin                                 controllers.Users.postSignIn
+GET         /home                                   controllers.Application.getIndex
+GET         /allbooks                               controllers.Books.getIndex
+GET         /subscribe/:bookId                      controllers.Subscriptions.getSubscribe(bookId: Int)
+GET         /subscriptions/:bookId                  controllers.Subscriptions.getIndex(bookId: Int)
+GET         /admin                                  controllers.Admin.getIndex
+POST        /admin/addbook                          controllers.Admin.postCreate
+GET         /admin/addbook                          controllers.Admin.getCreate
+GET         /admin/allsubs                          controllers.Admin.getAllSubscriptions
+GET         /admin/subs/:bookId                     controllers.Admin.getSubscriptions(bookId: Int)
+GET         /admin/subs/give/:subsId/:userId        controllers.Admin.getBorrow(subsId: Int, userId: Int)
+GET         /books/mine                             controllers.Users.getProfile
+GET         /subscriptions/queue/mine               controllers.Subscriptions.getQueue
+GET         /book/cert/:bookId                      controllers.Books.getCertificate(bookId: Int)
+GET         /admin/find                             controllers.Admin.getFindBook
+POST        /admin/find                             controllers.Admin.postFindBook
+GET         /subscriptions/:subsId/delete           controllers.Subscriptions.getDelete(subsId: Int)
+GET         /books/find                             controllers.Books.getSearch
+POST        /books/find                             controllers.Books.postSearch
+GET         /books/return/:subsId                   controllers.Admin.getReturnBook(subsId: Int)
+GET         /notifications                          controllers.Notifications.getNotifications
+GET         /log                                    controllers.Admin.getLog
 
 
-GET         /assets/*file                        controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                           controllers.Assets.versioned(path="/public", file: Asset)

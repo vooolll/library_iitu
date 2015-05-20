@@ -80,5 +80,17 @@ object SubscriptionRepo extends Repo{
       subsTable.filter(_.id === subsId).firstOption
   }
 
+  def getByCodeAndUser(data: (String, String)): List[Subscription] = DB withSession {
+    implicit session =>
+      data match {
+        case ("", "") => subsTable.filter(_.secretCode === data._1).list
+        case ("", userId) => subsTable.filter(_.userId === data._2.toInt).list
+        case (code, "") => subsTable.filter(_.secretCode === data._1).list
+        case (code, userId) => subsTable.filter(s => s.secretCode === code && s.userId === data._2.toInt).list
+      }
+  }
+
+
+
 }
 

@@ -1,0 +1,32 @@
+@(notifs: List[Notification])
+@layout("") {
+    <h1>Ваши уведомления</h1>
+    <br>
+    <br>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Ваши уведомления
+        </div>
+
+            <!-- /.panel-heading -->
+
+        <div class="panel-body">
+            <div class="list-group">
+                @if(notifs.isEmpty){
+                    <p>Нет уведомлений</p>
+                }
+            @notifs.map { notif =>
+                <a class="list-group-item" href="#">
+                    <i class="fa fa-comment fa-fw"></i> @notif.message
+                    <span class="pull-right text-muted small">
+                    </span>
+                </a>
+            }
+
+            </div>
+                <!-- /.list-group -->
+        </div>
+            <!-- /.panel-body -->
+    </div>
+}

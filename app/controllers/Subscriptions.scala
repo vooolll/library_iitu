@@ -1,13 +1,15 @@
 package controllers
 
 import controllers.auth.Secured
+import models.LogTypes
 import play.api.mvc._
-import services.{BooksService, SubscriptionService}
+import services.{LogService, BooksService, SubscriptionService}
 
 object Subscriptions extends Controller with Secured{
 
   def getSubscribe(bookId: Int) = withUser { user => implicit request =>
     SubscriptionService.subscribe(bookId, user.iituId)
+    LogService.add(user.iituId, bookId, LogTypes.SUBSCRIPTION)
     Redirect(routes.Subscriptions.getIndex(bookId))
   }
 
